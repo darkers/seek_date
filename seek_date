@@ -1,0 +1,56 @@
+#include<stdio.h>
+
+
+
+struct date
+{
+    int day;
+    int month;
+    int year;
+}dt;
+int daytab[2][13]={{0,31,28,31,30,31,30,31,31,30,31,30,31},
+                   {0,31,29,31,30,31,30,31,31,30,31,30,31}};
+int day_of_year(int year,int month,int day)
+{
+    int i,leap;
+    leap=(year%4 && year%100!=0 || year%400==0);
+    for(i=1;i<month;i++)
+        day+=daytab[leap][i];
+    return day;
+}
+
+void month_day(int year,int yearday,int *pmonth,int *pday)
+{
+    int i,leap;
+    leap=(year%4==0 && year%100!=0 || year%400==0);
+    for(i=1;yearday> daytab[leap][i];i++)
+        yearday-=daytab[leap][i];
+    *pmonth=i;
+    *pday=yearday;
+}
+
+void main()
+{
+    int k,days;
+    while(1)
+    {
+        printf("1:日期->天数 2：天数->日期 其他：退出 选择：");
+        scanf("%d",&k);
+        if(k==1)
+        {
+            printf("输入日期（年 月 日）:");
+            scanf("%d%d%d",&dt.year,&dt.month,&dt.day);
+            printf("%d年%d月%d日是这一年的%d天\n",dt.year,
+                   dt.month,dt.day,day_of_year(dt.year,dt.month,dt.day));
+        }else if(k==2)
+        {
+            printf("输入年份 天数：");
+            scanf("%d%d",&dt.year,&days);
+            month_day(dt.year,days,&dt.month,&dt.day);
+            printf("对应日期是%d年%d月%d日\n",dt.year,dt.month,dt.day);
+        }
+        else break;
+    }
+}
+
+
